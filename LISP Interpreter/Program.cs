@@ -6,12 +6,12 @@ class Lisp
 {
   
     static Boolean hadError = false;
-    static Boolean hadRuntimeError = false;
+   
     static void Main(string[] args)
     {
         if (args.Length > 1)
         {
-            Console.WriteLine("Usage: clox [script]");
+            Console.WriteLine("Usage: c#LISP [script]");
             System.Environment.Exit(64);
         }
         else if (args.Length == 1)
@@ -28,7 +28,7 @@ class Lisp
     {
         string strings = File.ReadAllText(path);
         if (hadError) System.Environment.Exit(65);
-        if (hadRuntimeError) System.Environment.Exit(70);
+       
         run(strings);
     }
     static void runPrompt()
@@ -55,11 +55,6 @@ class Lisp
 
 
         if (hadError) return;
-        Resolver resolver = new Resolver(interpreter);
-        resolver.resolve(statements);
-        if (hadError) return;
-
-        interpreter.interpret(statements);
     }
     public static void error(int line, String message)
     {

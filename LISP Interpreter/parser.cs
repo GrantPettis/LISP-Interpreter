@@ -50,11 +50,11 @@ class Parser
     }
     private Stmt condStatement()
     {
-        consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+        consume(TokenType.LEFT_PAREN, "Expect '(' after 'cond'.");
         Expr condition = expression();
-        consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
+        consume(TokenType.RIGHT_PAREN, "Expect ')' after cond condition.");
 
-        Stmt thenBranch = statement();
+        Stmt thenBranch = null;
         Stmt elseBranch = null;
         if (match(TokenType.ELSE))
         {
@@ -68,12 +68,12 @@ class Parser
     {
         Token keyword = previous();
         Expr value = null;
-        if (!check(TokenType.SEMICOLON))
+        if (!check(TokenType.RIGHT_PAREN))
         {
             value = expression();
         }
 
-        consume(TokenType.SEMICOLON, "Expect ';' after return value.");
+        consume(TokenType.RIGHT_PAREN, "Expect ')' after return value.");
         return new Stmt.Return(keyword, value);
     }
     private Stmt varDeclaration()
@@ -86,14 +86,14 @@ class Parser
             initializer = expression();
         }
 
-        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+        consume(TokenType.RIGHT_PAREN, "Expect ')' after variable declaration.");
         return new Stmt.Var(name, initializer);
     }
    
     private Stmt expressionStatement()
     {
         Expr expr = expression();
-        consume(TokenType.SEMICOLON, "Expect ';' after expression.");
+        consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
         return new Stmt.Expression(expr);
     }
     private Stmt.Function function(String kind)
@@ -366,14 +366,16 @@ class Parser
 
         while (!isAtEnd())
         {
-            if (previous().type == TokenType.SEMICOLON) return;
+            if (previous().type == TokenType.RIGHT_PAREN) return;
 
             switch (peek().type)
             {
-                case TokenType.COND
+                case TokenType.COND:
 
 
-                    return;
+                    condStatement();
+                        return;
+
             }
 
             advance();
