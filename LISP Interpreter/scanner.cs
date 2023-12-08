@@ -9,7 +9,7 @@
 
     public Scanner(String source)
     {
-        keywords = new Dictionary<String, TokenType>();
+        keywords = new Dictionary<String, TokenType>(); 
         keywords["and"] = TokenType.AND;
         keywords["Cond"] = TokenType.COND;
         keywords["Define"] = TokenType.DEFINE;
